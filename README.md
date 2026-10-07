@@ -80,6 +80,38 @@ The complete database dump is available in:
 db/blog.sql
 ```
 
+## Demo Admin Accounts
+
+Use the following demo accounts to test the admin features:
+
+### Admin 1
+
+Email:
+
+```text
+admin1@gmail.com
+```
+
+Password:
+
+```text
+6549852374
+```
+
+### Admin 2
+
+Email:
+
+```text
+admin2@gmail.com
+```
+
+Password:
+
+```text
+3652125487
+```
+
 ## Local Setup
 
 1. Install XAMPP.
