@@ -1,0 +1,136 @@
+
+<?php 
+require_once 'inc/header.php';
+ require_once 'inc/conn.php';
+ ?>
+    <!-- Page Content -->
+    <!-- Banner Starts Here -->
+    <div class="banner header-text">
+      <div class="owl-banner owl-carousel">
+        <div class="banner-item-01">
+          <div class="text-content">
+                  
+            <!-- <h4>Best Offer</h4> -->
+            <!-- <h2>New Arrivals On Sale</h2> -->
+          </div>
+        </div>
+        <div class="banner-item-02">
+          <div class="text-content">
+            <!-- <h4>Flash Deals</h4> -->
+            <!-- <h2>Get your best products</h2> -->
+          </div>
+        </div>
+        <div class="banner-item-03">
+          <div class="text-content">
+            <!-- <h4>Last Minute</h4> -->
+            <!-- <h2>Grab last minute deals</h2> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Banner Ends Here -->
+     <?php require_once './errors/success.php';?>
+     <?php require_once './errors/delete.php';?>
+    <div class="latest-products">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="section-heading">
+         
+              <h2>Latest Posts</h2>
+              <!-- <a href="products.html">view all products <i class="fa fa-angle-right"></i></a> -->
+            </div>
+          </div>
+          <?php 
+          //limit=3;
+          //offset=(page -1)* limit;
+          $limit=3;
+          if(isset($_GET['page'])){
+            $page=$_GET['page'];
+          }else{
+            $page=1;
+          }
+          $userid=$_SESSION['user_id'];
+          $query="select count(id) as total from posts where user_id=$userid;";
+          $result=mysqli_query($conn,$query);
+          $total=mysqli_fetch_assoc($result);
+
+          // $num_pages=ceil((int)$total['total'] / $limit);
+          $num_pages = max(1, ceil((int)$total['total'] / $limit));
+          if($page > $num_pages){
+                             header("location:{$_SERVER['PHP_SELF']}?page=$num_pages");exit();   
+          }else if($page <1 ){
+                              header("location:{$_SERVER['PHP_SELF']}?page=1");    exit();
+          }
+
+          $offset=($page - 1) * $limit;
+          // if(isset($_SESSION['user_id'])){
+          //   $userid=$_SESSION['user_id'];
+     $query="select * from posts where user_id=$userid limit $limit offset $offset;";
+          $result=mysqli_query($conn,$query);
+          // }
+     
+          if(mysqli_num_rows($result) > 0){
+              $posts=mysqli_fetch_all($result,MYSQLI_ASSOC);
+              foreach ($posts as $post){ ?>
+          <div class="col-md-4">  
+            <div class="product-item">
+              <a href="#"><img src="./uploads/<?php echo $post['image']?>" alt=""></a>
+              <div class="down-content">
+                <a href="#"><h4><?php echo $post['title']?></h4></a>
+                <h6><?php echo $post['created_at']?></h6>
+                <p><?php echo $post['body']?></p>
+                <!-- <ul class="stars">
+                  <li><i class="fa fa-star"></i></li>
+                  <li><i class="fa fa-star"></i></li>
+                  <li><i class="fa fa-star"></i></li>
+                  <li><i class="fa fa-star"></i></li>
+                  <li><i class="fa fa-star"></i></li>
+                </ul>
+                <span>Reviews (36)</span> -->
+                <div class="d-flex justify-content-end">
+                  <!-- <a href="http://" class="btn btn-info "> view</a> -->
+                  <a href="./viewPost.php?id=<?php echo $post['id'];?>" class="btn btn-info "> view</a>
+                </div>
+              </div>
+            </div>
+          </div>
+             <?php }
+          }else{
+              echo "
+              <script>
+                  document.addEventListener('DOMContentLoaded', function() {
+                      Swal.fire({
+                          toast: true,
+                          position: 'top-end', 
+                          icon: 'info',
+                          title: 'There Are No Posts Yet!!',
+                          showConfirmButton: false,
+                          timer: 4000, 
+                          timerProgressBar: true
+                      });
+                  });
+              </script>
+              ";
+          }
+          ?>
+          <nav aria-label="Page navigation example">
+          <ul class="pagination">
+            <li class="page-item  <?php  if( $page == 1 ){echo "disabled";}?>"><a class="page-link" href="<?php echo $_SERVER['PHP_SELF']."?page=".($page - 1) ?>">Previous</a></li>
+           <?php 
+            for($i = 1;$i <= $num_pages;$i++){?>
+            <li class="page-item">
+              <a class="page-link" href=" myposts.php?page=<?php echo $i; ?> "> <?php echo $i; ?> </a>
+              </li>
+          <?php  }
+           ?>
+            <li class="page-item  <?php  if($page==$num_pages){echo "disabled";}?>"><a class="page-link" href="<?php echo $_SERVER['PHP_SELF']."?page=".($page + 1) ?>">Next</a></li>
+          </ul>
+        </nav>
+        </div>
+      </div>
+    </div>
+
+ 
+    
+<?php require_once 'inc/footer.php' ?>
