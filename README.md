@@ -23,7 +23,7 @@ A full-stack blog project built with Native PHP and MySQL, developed as a portfo
 
 ## Technologies
 
-* PHP (Native PHP)
+* Native PHP
 * MySQL
 * HTML
 * CSS
@@ -35,10 +35,11 @@ A full-stack blog project built with Native PHP and MySQL, developed as a portfo
 ## Project Structure
 
 ```text
-blog/
+native-php-blog/
 ├── assets/
 ├── backimage/
-├── database/
+├── db/
+│   └── blog.sql
 ├── errors/
 ├── handle/
 ├── inc/
@@ -67,7 +68,7 @@ The project uses MySQL and includes:
 * `tokens`
 * `counter`
 
-It also contains:
+It also includes:
 
 * Triggers for post auditing and counter updates
 * Stored Procedures for post counter operations
@@ -76,7 +77,7 @@ It also contains:
 The complete database dump is available in:
 
 ```text
-database/blog_project.sql
+db/blog.sql
 ```
 
 ## Local Setup
@@ -86,10 +87,10 @@ database/blog_project.sql
 3. Create/import the database using:
 
 ```text
-database/blog_project.sql
+db/blog.sql
 ```
 
-4. Configure the local database connection in:
+4. Configure the database connection in:
 
 ```text
 inc/conn.php
